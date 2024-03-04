@@ -32,7 +32,9 @@ migrate_working_dir/
 /build/
 
 # Assets
-.assets/
+# .assets/
+/assets/videos/*
+!/assets/.gitkeep
 
 # Symbolication related
 app.*.symbols
