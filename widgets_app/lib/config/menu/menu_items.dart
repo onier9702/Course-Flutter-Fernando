@@ -31,5 +31,29 @@ const appMenuItems = <MenuItems>[
     link: '/cards',
     icon: Icons.credit_card
   ),
+  MenuItems(
+    title: 'Progress indicators',
+    subTitle: 'Generals and controlled',
+    link: '/progress',
+    icon: Icons.refresh_rounded
+  ),
+  MenuItems(
+    title: 'Snackbars and dialogs',
+    subTitle: 'Indicators on screen',
+    link: '/snackbar',
+    icon: Icons.info_outline
+  ),
+  MenuItems(
+    title: 'Animated container',
+    subTitle: 'Stateful widget animated',
+    link: '/animated',
+    icon: Icons.check_box_outline_blank
+  ),
+  MenuItems(
+    title: 'UI Controllers',
+    subTitle: 'UI controllers',
+    link: '/ui-controller',
+    icon: Icons.check_box_outline_blank
+  ),
 
 ];
