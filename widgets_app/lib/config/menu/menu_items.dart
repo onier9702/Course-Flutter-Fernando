@@ -50,10 +50,23 @@ const appMenuItems = <MenuItems>[
     icon: Icons.check_box_outline_blank
   ),
   MenuItems(
-    title: 'UI Controllers',
-    subTitle: 'UI controllers',
+    title: 'UI Controls _ Tiles',
+    subTitle: 'Flutter series controllers',
     link: '/ui-controller',
-    icon: Icons.check_box_outline_blank
+    icon: Icons.car_rental_outlined
+  ),
+  MenuItems(
+    title: 'App tutorial',
+    subTitle: 'A brief trip of the app',
+    link: '/tutorial',
+    icon: Icons.accessible_rounded
+  ),
+
+  MenuItems(
+    title: 'Infinite scroll and Pull',
+    subTitle: 'Infinite scroll - pull to refresh',
+    link: '/infinite',
+    icon: Icons.list_alt_rounded
   ),
 
 ];
