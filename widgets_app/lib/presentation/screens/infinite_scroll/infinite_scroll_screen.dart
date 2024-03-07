@@ -43,7 +43,7 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
   Future loadNextPage() async {
     if (isLoading) return;
     isLoading = true;
-    // setState(() {});
+    setState(() {}); // this draw again UI and spin perfect is displayed
 
     await Future.delayed(const Duration(seconds: 2));
 
@@ -52,7 +52,7 @@ class _InfiniteScrollScreenState extends State<InfiniteScrollScreen> {
 
     if (!isMounted) return; // to avoid error when user leave the page abruptly
 
-    setState(() {});
+    setState(() {}); // this draw the UI again displaying the new 5 images
 
     // Move scroll a little when is at end
     moveScrollToBottom();

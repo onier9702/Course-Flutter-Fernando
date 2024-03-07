@@ -69,4 +69,18 @@ const appMenuItems = <MenuItems>[
     icon: Icons.list_alt_rounded
   ),
 
+  MenuItems(
+    title: 'Counter Riverpod',
+    subTitle: 'Counter Riverpod',
+    link: '/counter',
+    icon: Icons.add
+  ),
+
+  MenuItems(
+    title: 'Change Theme',
+    subTitle: 'Theme app',
+    link: '/theme-changer',
+    icon: Icons.color_lens_outlined
+  ),
+
 ];

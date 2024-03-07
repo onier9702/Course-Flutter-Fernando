@@ -12,9 +12,11 @@ const List<Color> colorsList = [
 class AppTheme {
 
   final int selectedColor;
+  final bool isDarkMode;
 
   AppTheme({
-    required this.selectedColor,
+    this.selectedColor = 0,
+    this.isDarkMode = false,
   }): assert(
     selectedColor >= 0 && selectedColor < colorsList.length,
     'Selected colors must be between 0 and ${colorsList.length}'
@@ -22,7 +24,14 @@ class AppTheme {
 
   ThemeData getTheme() => ThemeData(
     useMaterial3: true,
-    colorSchemeSeed: colorsList[selectedColor]
+    colorSchemeSeed: colorsList[selectedColor],
+    brightness: isDarkMode ? Brightness.dark : Brightness.light,
   );
+
+  AppTheme copyWith({int? selectedColor, bool? isDarkMode}) 
+    => AppTheme(
+      selectedColor: selectedColor ?? this.selectedColor,
+      isDarkMode: isDarkMode ?? this.isDarkMode
+    );
 
 }
