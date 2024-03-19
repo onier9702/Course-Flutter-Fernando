@@ -1,4 +1,5 @@
 
+import 'package:cinemapedia_app/infrastructure/models/moviedb/movie_details.dart';
 import 'package:dio/dio.dart';
 
 import 'package:cinemapedia_app/config/constants/environment.dart';
@@ -73,6 +74,22 @@ class MoviedbDatasource extends MoviesDataSource {
     );
 
     return _jsonToMovies(response.data);
+  }
+  
+  @override
+  Future<Movie> getMovieById(String id) async {
+    
+    final response = await dio.get('/movie/$id');
+    if (response.statusCode != 200) throw Exception('Movie with ID: $id not found.');
+
+    // Transform the data api from Json to adapt the name of properties to my own properties
+    final moviedetails = MovieDetails.fromJson(response.data);
+
+    // Transform the MovieDetails(json of my own properties) to the general Movie object we use on the app
+    final Movie movie = MovieMapper.movieDetailsToEntity(moviedetails);
+
+    return movie;
+
   }
 
 

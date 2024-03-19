@@ -10,4 +10,6 @@ abstract class MoviesRepository { // abstract means you do not want to create in
 
   Future <List<Movie>> getUpcoming({int page = 1});
 
+  Future<Movie> getMovieById(String id);
+
 }
