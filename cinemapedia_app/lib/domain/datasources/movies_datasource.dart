@@ -12,4 +12,6 @@ abstract class MoviesDataSource { // abstract means you do not want to create in
 
   Future<Movie> getMovieById(String id);
 
+  Future<List<Movie>> searchMovies(String query);
+
 }
