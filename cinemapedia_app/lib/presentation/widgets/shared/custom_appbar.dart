@@ -58,7 +58,7 @@ class CustomAppbar extends ConsumerWidget {
                     if (movie == null) return;
 
                     // navigate to the id movie when click over one movie (function close from delegate was called)
-                    context.push('/movie/${movie.id}');
+                    context.push('/home/0/movie/${movie.id}');
                   });
                 },
               ),

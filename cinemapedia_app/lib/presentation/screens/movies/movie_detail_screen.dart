@@ -1,6 +1,6 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:animate_do/animate_do.dart';
 
 import 'package:cinemapedia_app/presentation/providers/providers.dart';
 import 'package:cinemapedia_app/domain/entities/movie.dart';
@@ -202,7 +202,14 @@ class _ActorsByMovie extends ConsumerWidget {
   }
 }
 
-class _CustomSliverAppbar extends StatelessWidget {
+// Here we create a future provider to get if movie is fav or not
+final isFavoriteProvider = FutureProvider.family.autoDispose((ref, int movieId) {
+  final localStorageRepository = ref.watch(localStorageRepositoryProvider);
+
+  return localStorageRepository.isMovieFavorite(movieId); // if the movie is on favorites
+});
+
+class _CustomSliverAppbar extends ConsumerWidget {
 
   final Movie movie;
 
@@ -211,13 +218,43 @@ class _CustomSliverAppbar extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
 
+    // Here we have the reference to the future provider 
+    final isFavoriteFuture = ref.watch(isFavoriteProvider(movie.id));
     final size = MediaQuery.of(context).size;
 
     return SliverAppBar(
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.7,
+      // Actions to set over this sliver app bar
+      actions: [
+        IconButton(
+          onPressed: () async {
+            // Toggle one favorite movie or not
+            // ref.read(localStorageRepositoryProvider)
+            //   .toggleFavorite(movie);
+
+            // Here we changed the use of other provider
+            await ref.read(favoriteMoviesProvider.notifier)
+              .toggleFavoriteMovie(movie);
+
+            // Invalidate isFavoriteProvider method to reload state
+            // In other words, this reload the provider
+            ref.invalidate(isFavoriteProvider(movie.id));
+          },
+          icon: isFavoriteFuture
+            .when(
+              loading: () => const Icon(Icons.favorite_border), // display empty heart when loading
+              data: (isFavorite) => isFavorite
+                ? const Icon(Icons.favorite_rounded, color: Colors.red)
+                :const Icon(Icons.favorite_border),
+              error: (_, __) => throw UnimplementedError(),
+            ),
+          // icon: const Icon(Icons.favorite_border)
+          // icon: const Icon(Icons.favorite_border, color: Colors.red)
+        )
+      ],
       foregroundColor: Colors.white,
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -241,32 +278,59 @@ class _CustomSliverAppbar extends StatelessWidget {
               ),
             ),
 
-            const SizedBox.expand(
-              child: DecoratedBox( // to be able to see the title
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: [0.7, 1.0],
-                    colors: [Colors.transparent, Colors.black87]
-                  ),
-                ),
-              ),
+            const _CustomGradient( // to be able to see the title
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: [0.8, 1.0],
+              colors: [Colors.transparent, Colors.black54],
             ),
 
-            const SizedBox.expand(
-              child: DecoratedBox( // to be able to see the back route arrow
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    stops: [0.0, 0.23],
-                    colors: [Colors.black87, Colors.transparent]
-                  ),
-                ),
-              ),
+            const _CustomGradient( // to be able to see the favorite heart icon
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: [0.0, 0.2],
+              colors: [Colors.black54, Colors.transparent],
+            ),
+
+            const _CustomGradient( // to be able to see the back route arrow
+              begin: Alignment.topLeft,
+              end: Alignment.center,
+              stops: [0.0, 0.23],
+              colors: [Colors.black87, Colors.transparent],
             ),
 
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _CustomGradient extends StatelessWidget {
+
+  final AlignmentGeometry begin;
+  final AlignmentGeometry end;
+  final List<double> stops;
+  final List<Color> colors;
+
+  const _CustomGradient({
+    required this.begin,
+    required this.stops,
+    required this.colors,
+    required this.end
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.expand(
+      child: DecoratedBox( // to be able to see the favorite heart icon
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: begin,
+            end: end,
+            stops: stops,
+            colors: colors
+          ),
         ),
       ),
     );
