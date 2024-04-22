@@ -13,3 +13,8 @@ to compare state
 ```
 equatable
 ```
+
+3. Formz package to handle errors on individual fields
+```
+formz
+```

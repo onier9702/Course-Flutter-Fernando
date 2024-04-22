@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:forms_app/presentation/blocs/register/register_cubit.dart';
 
 import 'package:forms_app/presentation/widgets/widgets.dart';
 
@@ -12,7 +14,10 @@ class RegisterScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Register here'),
       ),
-      body: const _RegisterView(),
+      body: BlocProvider(
+        create: (context) => RegisterCubit(),
+        child: const _RegisterView(),
+      ),
     );
   }
 }
@@ -44,56 +49,61 @@ class _RegisterView extends StatelessWidget {
   }
 }
 
-class _RegisterForm extends StatefulWidget {
+// Before use register cubit state, this class was an stateFullWidget and then we come back to a statelessWidget
+class _RegisterForm extends StatelessWidget {
 
   const _RegisterForm();
 
-  @override
-  State<_RegisterForm> createState() => _RegisterFormState();
-}
-
-class _RegisterFormState extends State<_RegisterForm> {
-
   // Form
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String username = '';
-  String email = '';
-  String password = '';
-
   @override
   Widget build(BuildContext context) {
 
+    final registerCubit = context.watch<RegisterCubit>();
+    final username = registerCubit.state.username;
+    final password = registerCubit.state.password;
+    final email = registerCubit.state.email;
+
     return Form(
-      key: _formKey, // assign the _formKey to the form
+      // not more necessary after use register cubit state
+      // key: _formKey, // assign the _formKey to the form
       child: Column(
         children: [
 
           CustomTextFormField(
             label: 'Username',
-            onChanged: (value) => username = value,
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) return 'Username is required';
-              if (value.length < 6) return 'Username should have 6 letters or more';
+            // OLD Solution without Cubit
+            // onChanged: (value) => username = value,
 
-              return null;
-            },
+            // Solution using Cubit
+            // onChanged: (value) {
+            //   registerCubit.usernameChanged(value);
+            //   // _formKey.currentState?.validate();
+            // },
+
+            onChanged: registerCubit.usernameChanged,
+            // not more necessary after use register cubit state
+            // validator: (value) {
+            //   if (value == null || value.trim().isEmpty) return 'Username is required';
+            //   if (value.length < 6) return 'Username should have 6 letters or more';
+
+            //   return null;
+            // },
+            errorMessage: username.errorMessage,
           ),
 
           const SizedBox(height: 10),
 
           CustomTextFormField(
             label: 'Email',
-            onChanged: (value) => email = value,
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) return 'Username is required';
-              final emailRegExp = RegExp(
-                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-              );
+            // OLD Solution without Cubit
+            // onChanged: (value) => email = value,
 
-              if (!emailRegExp.hasMatch(value)) return 'Email has an invalid format';
-
-              return null;
+            // Solution using Cubit
+            onChanged: (value) {
+              registerCubit.emailChanged(value);
+              // _formKey.currentState?.validate();
             },
+            errorMessage: email.errorMessage,
           ),
 
           const SizedBox(height: 10),
@@ -101,13 +111,16 @@ class _RegisterFormState extends State<_RegisterForm> {
           CustomTextFormField(
             label: 'Password',
             obscurePassword: true,
-            onChanged: (value) => password = value,
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) return 'Username is required';
-              if (value.length < 6) return 'Password should have 6 characters or more';
+            // OLD Solution without Cubit
+            // onChanged: (value) => password = value,
 
-              return null;
-            },
+            // Solution using Cubit
+            // onChanged: (value) {
+            //   registerCubit.passwordChanged(value);
+            //   // _formKey.currentState?.validate();
+            // },
+            onChanged: registerCubit.passwordChanged,
+            errorMessage: password.errorMessage,
           ),
 
           const SizedBox(height: 20),
@@ -115,8 +128,12 @@ class _RegisterFormState extends State<_RegisterForm> {
           FilledButton.tonalIcon(
             onPressed: () {
               // print('$username, $email, $password');
-              final isValid = _formKey.currentState!.validate();
-              if (!isValid) return;
+
+              // not more necessary after use register cubit state
+              // final isValid = _formKey.currentState!.validate();
+              // if (!isValid) return;
+
+              registerCubit.onSubmit();
 
             },
             icon: const Icon(Icons.save),
