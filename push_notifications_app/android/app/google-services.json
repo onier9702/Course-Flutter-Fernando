@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "591064087982",
+    "project_id": "flutter-projects-67799",
+    "storage_bucket": "flutter-projects-67799.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591064087982:android:cffe49824cf2d316dc5c3f",
+        "android_client_info": {
+          "package_name": "com.example.push_notifications_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZWRFJG0s-C8-O8SbmXJkqagPkvHCP4l4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:591064087982:android:fb227517363a61bbdc5c3f",
+        "android_client_info": {
+          "package_name": "com.oniercrestelo.push_notifications_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZWRFJG0s-C8-O8SbmXJkqagPkvHCP4l4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
