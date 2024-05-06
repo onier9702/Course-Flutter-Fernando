@@ -18,6 +18,9 @@ A new Flutter project.
 4. firebase core
 ```firebase_core```
 
+5. local notifications
+```flutter_local_notifications```
+
 __Possible-Alert__
 Warning: Pub installs executables into $HOME/.pub-cache/bin, which is not on your path.
 You can fix that by adding this to your shell's config file (.bashrc, .bash_profile, etc.):

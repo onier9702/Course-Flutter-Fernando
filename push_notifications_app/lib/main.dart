@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:push_notifications_app/config/router/app_router.dart';
 import 'package:push_notifications_app/config/theme/app_theme.dart';
+import 'package:push_notifications_app/config/local_notifications/local_notifications.dart';
 
 import 'package:push_notifications_app/presentation/blocs/notifications/notifications_bloc.dart';
 
@@ -14,12 +14,16 @@ void main() async {
   // Init at top level of the app the onBackground message notification
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
   await NotificationsBloc.initializeFCM();
+  await LocalNotifications.initializeLocalNotifications();
 
   runApp(
     // HERE we are setting the block provider in the highest point of the app
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => NotificationsBloc())
+        BlocProvider(create: (_) => NotificationsBloc(
+          requestLocalNotificationPermission: LocalNotifications.requestPermissionLocalNotifications,
+          showLocalNotification: LocalNotifications.showLocalNotification
+        ))
       ],
       child: const MainApp(),
     ),

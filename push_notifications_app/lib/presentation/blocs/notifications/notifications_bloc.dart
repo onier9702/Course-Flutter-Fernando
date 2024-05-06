@@ -2,11 +2,11 @@ import 'dart:io'; // to use Platform on this case
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:push_notifications_app/firebase_options.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:push_notifications_app/domain/entities/push_message.dart';
+import 'package:push_notifications_app/firebase_options.dart';
 
 part 'notifications_event.dart';
 part 'notifications_state.dart';
@@ -23,9 +23,16 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
   FirebaseMessaging messaging = FirebaseMessaging.instance;
+  int pushNumberId = 0;
+
+  final Future<void> Function()? requestLocalNotificationPermission;
+  final void Function({required int id, String? title, String? body, String? data})? showLocalNotification;
 
   // constructor
-  NotificationsBloc() : super(const NotificationsState()) {
+  NotificationsBloc({
+    this.requestLocalNotificationPermission,
+    this.showLocalNotification
+  }) : super(const NotificationsState()) {
 
     on<NotificationStatusChanged>(_notificationStatusChanged);
     on<NotificationReceived>(_pushNotificationReceived);
@@ -97,7 +104,19 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
         : message.notification!.apple?.imageUrl,
     );
 
-    print(notification);
+    // print(notification);
+
+    // Show notification as a modal from top screen
+    if (showLocalNotification != null) {
+      showLocalNotification!(
+        id: ++pushNumberId,
+        body: notification.body,
+        data: notification.messageId,
+        title: notification.title
+      );
+
+    }
+
     // Trigger a new state calling the listener
     add(NotificationReceived(notification));
   }
@@ -117,6 +136,13 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       provisional: false,
       sound: true,
     );
+
+    // To request permission for local notifications as well
+    if (requestLocalNotificationPermission != null) {
+      await requestLocalNotificationPermission!();
+      // Not more necessary so now it comes as an argument of the bloc class
+      // await LocalNotifications.requestPermissionLocalNotifications();
+    }
 
     // Save on state the status of authorization
     add(NotificationStatusChanged(settings.authorizationStatus));

@@ -27,10 +27,15 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.oniercrestelo.push_notifications_app"
-    compileSdk flutter.compileSdkVersion
+    // compileSdk flutter.compileSdkVersion // replace for 34 compileSdkVersion
+    compileSdk 34
     ndkVersion flutter.ndkVersion
 
+    // First Config to use local notifications with schedule notifications
     compileOptions {
+        // Flag to enable support for the new language APIs
+        // coreLibraryDesugaringEnabled true // uncomment this if you want to schedule
+        // Sets Java compatibility to Java 8
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -68,4 +73,7 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    // 2nd config to use schedule notifications
+    // coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2' // uncomment this line
+}
