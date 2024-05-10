@@ -16,3 +16,18 @@ Este es un proyecto para trabajar con:
 # Importante
 Recuerden leer y seguir la guía para montar el backend localmente.
 
+## Installations
+1. Formz
+```formz```
+
+2. Riverpod (state managment) Remember to use the ProviderScope in your MainApp() to have it at top level
+```flutter_riverpod```
+
+3. Dotenv
+```flutter_dotenv```
+
+4. Dio to make http request to server
+```dio```
+
+5. Shared Preferences (to store simple data on local devide)
+```shared_preferences```
