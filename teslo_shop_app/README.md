@@ -31,3 +31,6 @@ Recuerden leer y seguir la guía para montar el backend localmente.
 
 5. Shared Preferences (to store simple data on local devide)
 ```shared_preferences```
+
+6. Masonry ( to display grid reparated products in screen )
+```flutter_staggered_grid_view```
