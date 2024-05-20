@@ -7,6 +7,7 @@ import 'products_repository_provider.dart';
 // You have the class State(1-), the class Notifier(2-) and the provider(3-)
 
 // 3- provider (this is who you are going to listen via watch or read from outside)
+// PROVIDER for LIST
 final productsProvider = StateNotifierProvider<ProductsNotifier, ProductsState>((ref) {
 
   final productsRepository = ref.watch(productsRepositoryProvider);
@@ -57,6 +58,34 @@ class ProductsNotifier extends StateNotifier<ProductsState> {
     required this.productsRepository
   }): super(ProductsState()) {  // create the first instance of the class state
     loadNextPage(); // call the loadNextPage when class state is initializae
+  }
+
+  Future<bool> createOrUpdateProductOcurred(Map<String, dynamic> productLike) async {
+
+    try {
+      
+      final product = await productsRepository.createUpdateProduct(productLike);
+      final isProductInList = state.products.any((prod) => prod.id == product.id);
+
+      if (!isProductInList) { // was a creation
+        state = state.copyWith(
+          products: [product, ...state.products],
+        );
+
+      } else { // was an update
+        state = state.copyWith(
+          products: state.products.map(
+            (prod) => prod.id == product.id ? product : prod,
+          ).toList()
+        );
+      }
+
+      return true;
+
+    } catch (e) {
+      return false;
+    }
+
   }
 
   Future loadNextPage() async {

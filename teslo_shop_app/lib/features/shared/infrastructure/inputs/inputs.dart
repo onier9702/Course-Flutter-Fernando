@@ -1,4 +1,8 @@
 export 'email.dart';
 export 'fullname.dart';
-export 'password.dart';
 export 'password_repeat.dart';
+export 'password.dart';
+export 'price.dart';
+export 'slug.dart';
+export 'stock.dart';
+export 'title.dart';
