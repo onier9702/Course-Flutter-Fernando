@@ -1,7 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 import './camera_gallery_service.dart';
 
-abstract class CameraGalleryServiceImpl extends CameraGalleryService {
+class CameraGalleryServiceImpl extends CameraGalleryService {
 
   final ImagePicker _picker = ImagePicker();
 
@@ -15,6 +15,7 @@ abstract class CameraGalleryServiceImpl extends CameraGalleryService {
 
     if (image == null) return null;
 
+    print(image.path);
     return image.path;
   }
 

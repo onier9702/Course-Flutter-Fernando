@@ -22,6 +22,47 @@ class ProductsDatasourceImpl extends ProductsDatasource {
     ),
   );
 
+  Future<String> _uploadSinglePhoto(String path) async {
+    try {
+      
+      final fileName = path.split('/').last;
+      final FormData formData = FormData.fromMap({
+        'file': MultipartFile.fromFileSync(path, filename: fileName),
+      });
+
+      final response = await dio.post('/files/product', data: formData);
+
+      return response.data['image'];
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  Future<List<String>> _uploadPhotos(List<String> photos) async {
+    final photosToUpload = photos.where( (img) {
+      return (img.contains('/') && !img.contains('http')) 
+        ? true
+        : false;
+    }).toList();
+
+    final photosToKeep = photos.where((img) {
+      return (!img.contains('/') || img.contains('http')) 
+        ? true
+        : false;
+    }).toList();
+
+    // Call all the request to upload image in a single future
+    // the same JavaScript to use Promise.all(<arrPromises>)
+    final List<Future<String>> uploadArrFutures = photosToUpload.map(
+      (e) => _uploadSinglePhoto(e)
+    ).toList();
+
+    final newImages = await Future.wait(uploadArrFutures);
+
+    return [...photosToKeep, ...newImages];
+
+  }
+
   @override
   Future<Product> createUpdateProduct(Map<String, dynamic> productLike) async {
     
@@ -34,6 +75,8 @@ class ProductsDatasourceImpl extends ProductsDatasource {
         : '/products/$productId';
 
       productLike.remove('id');
+      // Update images to upload
+      productLike['images'] = await _uploadPhotos(productLike['images']);
 
       final response = await dio.request(
         url,
