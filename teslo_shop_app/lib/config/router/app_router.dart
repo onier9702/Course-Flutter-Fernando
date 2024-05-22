@@ -44,6 +44,10 @@ final goRouterProvider = Provider((ref) {
           productId: state.params['id'] ?? 'no-id'
         ),
       ),
+      GoRoute(
+        path: '/scan',
+        builder: (context, state) => const ScanBarcodeScreen(),
+      ),
     ],
 
     // property refreshListenable is who call redirect when authentication change

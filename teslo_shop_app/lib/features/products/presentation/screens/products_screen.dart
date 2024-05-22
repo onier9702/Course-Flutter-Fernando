@@ -28,13 +28,27 @@ class ProductsScreen extends StatelessWidget {
         ],
       ),
       body: const _ProductsView(),
-      floatingActionButton: FloatingActionButton.extended(
-        label: const Text('New product'),
-        icon: const Icon( Icons.add ),
-        onPressed: () {
-          // New Product Button
-          context.push('/product/new');
-        },
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton.extended(
+            label: const Text('New product'),
+            icon: const Icon( Icons.add ),
+            onPressed: () {
+              // New Product Button
+              context.push('/product/new');
+            },
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton.extended(
+            label: const Text('Scan Barcode'),
+            icon: const Icon(Icons.qr_code_scanner),
+            onPressed: () {
+              // Navigate to ScanBarcodeScreen
+              context.push('/scan');
+            },
+          ),
+        ],
       ),
     );
   }

@@ -172,7 +172,7 @@ class _ProductInformation extends ConsumerWidget {
             isTopField: true,
             label: 'Stock (Existences)',
             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            initialValue: productForm.inStock.toString(),
+            initialValue: productForm.inStock.value.toString(),
             onChanged: (value) => ref.read(productFormProvider(product).notifier)
               .onStockChanged(int.tryParse(value) ?? -1),
             errorMessage: productForm.inStock.errorMessage,

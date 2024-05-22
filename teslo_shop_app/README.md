@@ -34,3 +34,11 @@ Recuerden leer y seguir la guía para montar el backend localmente.
 
 6. Masonry ( to display grid reparated products in screen )
 ```flutter_staggered_grid_view```
+
+7. Image selector
+```image_picker```
+__NEED__ to write explanation of permissions on IOS to can access resources of camera on apple devices 
+path: /ios/Runner/Info.plist
+
+8. Bardcode scanner
+```flutter_barcode_scanner```
